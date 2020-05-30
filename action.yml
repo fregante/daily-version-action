@@ -1,13 +1,10 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
-inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
-    required: true
-    default: '1000'
+name: 'Daily Version'
+description: 'Creates a new tag using the format Y.M.D, but only if HEAD isn’t already tagged'
 outputs:
-  time: # output will be available to future steps 
-    description: 'The message to output'
+  created:
+    description: 'If it exists, a new tag has been created'
+  version:
+    description: 'The latest version tag, either pre-existing or just created'
 runs:
   using: 'node12'
-  main: 'dist/index.js'
+  main: 'distribution/index.js'
