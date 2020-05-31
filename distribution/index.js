@@ -56,8 +56,6 @@ const util = __webpack_require__(669);
 const execFile = util.promisify(__webpack_require__(129).execFile);
 
 async function init() {
-	throw new Error('Testing an error');
-
 	// Use ENV if it's a `push.tag` event
 	if (process.env.GITHUB_REF.startsWith('refs/tags/')) {
 		const pushedTag = process.env.GITHUB_REF.replace('refs/tags/', '');
@@ -76,20 +74,22 @@ async function init() {
 		return;
 	}
 
-	// A new tag must br created
+	// A new tag must be created
 	const {stdout} = await execFile('npx', ['daily-version']);
 	const version = stdout.trim(); // `stdout` ends with \n
+	console.log('HEAD isn’t tagged. `daily-version-action` will create `' + version + '`');
+
 	console.log('::set-output name=version::' + version);
-	console.log(JSON.stringify(version));
+
+	// Create tag and push it
 	await execFile('git', ['tag', version, '-m', version]);
 	await execFile('git', ['push', 'origin', version]);
 	console.log('::set-output name=created::yes');
 }
 
 init().catch(error => {
-	console.error('why is this not being caught?');
 	console.error(error);
-	process.exit(1); // eslint-disable-line unicorn/no-process-exit
+	process.exit(1);
 });
 
 

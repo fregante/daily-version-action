@@ -15,16 +15,19 @@
 		"package": "ncc build index.js -o distribution",
 		"test": "xo"
 	},
+	"xo": {
+		"ignore": [
+			"distribution"
+		],
+		"rules": {
+			"unicorn/no-process-exit": "off"
+		}
+	},
 	"dependencies": {
 		"daily-version": "^1.0.0"
 	},
 	"devDependencies": {
 		"@zeit/ncc": "^0.22.3",
 		"xo": "^0.30.0"
-	},
-	"xo": {
-		"ignore": [
-			"distribution"
-		]
 	}
 }
