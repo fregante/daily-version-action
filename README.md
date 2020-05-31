@@ -6,7 +6,7 @@ Ideally used on schedule, but you could also change the suggested condition to o
 
 ## Usage
 
-It expects `git` to be configured to push to the same repo, perhaps via [fregante/setup-git-token](https://github.com/fregante/setup-git-token)
+It expects `git` to be configured to push to the same repo, perhaps via [fregante/setup-git-token](https://github.com/fregante/setup-git-token).
 
 See [action.yml](action.yml)
 
@@ -40,11 +40,11 @@ Regradless of creating a new version, the most recent version can be accessed us
 
 ## Inputs
 
-None
+None.
 
 ## Outputs
 
-- `created` - If this output exists, this action created a new tag
-- `version` - The latest tag, whether it already existed or if it was just created
+- `created` - If this output exists, this action created a new tag.
+- `version` - The latest tag, whether it already existed or if it was just created.
 
 Outputs can be [used across jobs](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjobs_idoutputs) as well.
