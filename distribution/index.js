@@ -65,7 +65,7 @@ async function init() {
 	}
 
 	// Look for tags on the current commit
-	await execFile('git', ['--depth=1', 'origin', 'refs/tags/*:refs/tags/*']);
+	await execFile('git', ['fetch', '--depth=1', 'origin', 'refs/tags/*:refs/tags/*']);
 	const {stdout: tagsOnHead} = await execFile('git', ['tag', '-l', '--points-at', 'HEAD']);
 	if (tagsOnHead) {
 		const [mostRecentTag] = tagsOnHead.split('/');
