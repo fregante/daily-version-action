@@ -12,9 +12,9 @@ async function init() {
 
 	// Look for tags on the current commit
 	await execFile('git', ['fetch', '--depth=1', 'origin', 'refs/tags/*:refs/tags/*']);
-	const {stdout} = await execFile('git', ['tag', '-l', '--points-at', 'HEAD']);
-	if (stdout) {
-		const [mostRecentTag] = stdout.split('\n'); // `stdout` main contain multiple tags
+	const {stdout: tagsOnHead} = await execFile('git', ['tag', '-l', '--points-at', 'HEAD']);
+	if (tagsOnHead) {
+		const [mostRecentTag] = tagsOnHead.split('\n'); // `stdout` may contain multiple tags
 		console.log('::set-output name=version::' + mostRecentTag);
 		console.log('No new commits since the last tag (' + mostRecentTag + '). No new tags will be created by `daily-version-action`.');
 		return;
