@@ -68,7 +68,7 @@ async function init() {
 	await execFile('git', ['fetch', '--depth=1', 'origin', 'refs/tags/*:refs/tags/*']);
 	const {stdout: tagsOnHead} = await execFile('git', ['tag', '-l', '--points-at', 'HEAD']);
 	if (tagsOnHead) {
-		const [mostRecentTag] = tagsOnHead.split('/');
+		const [mostRecentTag] = tagsOnHead.split('\n'); // `stdout` may contain multiple tags
 		console.log('::set-output name=version::' + mostRecentTag);
 		console.log('No new commits since the last tag (' + mostRecentTag + '). No new tags will be created by `daily-version-action`.');
 		return;
