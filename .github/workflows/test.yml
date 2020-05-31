@@ -15,5 +15,8 @@ jobs:
     if: github.event_name == 'push'
     steps:
       - uses: actions/checkout@v2
+      - uses: fregante/setup-git-token@v1 # This will allow saving the generated tag
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Action
         uses: ./
