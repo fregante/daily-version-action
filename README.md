@@ -22,20 +22,12 @@ See [action.yml](action.yml)
       uses: fregante/daily-version-action@v1
 ```
 
-To check if any new version has been created in other jobs, use [`job.outputs`](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjobs_idoutputs) object to see if `created` property is set. This property would not be set if any new versions are created.
+You can use the `created` output of this action to test whether a new version has been created, even [across jobs](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjobs_idoutputs):
 
 ```yaml
   Build:
     needs: Version
     if: github.event_name == 'push' || needs.Version.outputs.created
-```
-
-Regradless of creating a new version, the most recent version can be accessed using the `job.outputs.version` property, after this action is run.
-
-``` yaml
-  Cleanup:
-    needs: Version
-    run: echo "Current version: ${{needs.Version.outputs.version}}"
 ```
 
 ## Inputs
