@@ -20,4 +20,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Action
+        id: Version
         uses: ./
+      - name: Test the action by deleting the tag it supposedly created
+        run: |
+          if [ yes = ${{ steps.Version.outputs.created }} ]; then
+            git push --delete origin ${{ steps.Version.outputs.version }}
+          fi
