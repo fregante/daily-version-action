@@ -8,7 +8,7 @@ Ideally used on schedule, but you could also change the suggested condition to o
 
 ## Usage
 
-It expects `git` to be configured to push to the same repo, perhaps via [fregante/setup-git-token](https://github.com/fregante/setup-git-token).
+It expects `git` to be configured to push to the same repo. The `v2` of `actions/checkout` automatically sets required token and, if not set, this action will use the git user `daily-version-action <actions@users.noreply.github.com>` to create the tag. This can be customized with something like [setup-git-token](https://github.com/fregante/setup-git-token).
 
 See [action.yml](action.yml)
 
@@ -16,14 +16,11 @@ See [action.yml](action.yml)
   Version:
     steps:
     - uses: actions/checkout@v2
-    - uses: fregante/setup-git-token@v1 # Allows pushing the generated tag to the repo
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
     - name: Create tag if necessary
       uses: fregante/daily-version-action@v1
 ```
 
-You can use the `created` output of this action to test whether a new version has been created, even [across jobs](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjobs_idoutputs):
+You can use the `created` and `version` outputs of this action to test whether a new version has been created, even [across jobs](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjobs_idoutputs):
 
 ```yaml
     - name: 'Create tag if necessary'
@@ -41,6 +38,6 @@ None.
 ## Outputs
 
 - `created` - If this output exists, this action created a new tag.
-- `version` - The latest tag, whether it already existed or if it was just created.
+- `version` - The latest tag, whether it already existed or if it just created one.
 
 Outputs can be [used across jobs](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjobs_idoutputs) as well.
