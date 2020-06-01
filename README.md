@@ -25,9 +25,12 @@ See [action.yml](action.yml)
 You can use the `created` output of this action to test whether a new version has been created, even [across jobs](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjobs_idoutputs):
 
 ```yaml
-  Build:
-    needs: Version
-    if: github.event_name == 'push' || needs.Version.outputs.created
+    - name: 'Create tag if necessary'
+      id: version
+      uses: fregante/daily-version-action@v1
+    - name: 'Created?'
+      if: steps.version.outputs.created
+      runs: echo 'Created!' ${{ steps.version.outputs.version }}
 ```
 
 ## Inputs
