@@ -1,19 +1,11 @@
 name: Test
 
 on:
-  - pull_request
   - push
 
 jobs:
-  Lint:
+  Run:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: npm ci
-      - run: npm test
-  Use:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push'
     steps:
       - uses: actions/checkout@v2
       - name: Run Action
