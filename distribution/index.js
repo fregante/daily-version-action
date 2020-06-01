@@ -95,7 +95,7 @@ async function init() {
 }
 
 init().catch(error => {
-	console.error(error);
+	console.error(error.name, error.message);
 	process.exit(1);
 });
 

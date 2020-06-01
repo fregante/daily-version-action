@@ -16,6 +16,7 @@
 	"license": "MIT",
 	"author": "fregante",
 	"scripts": {
+		"build": "npm run package",
 		"package": "ncc build index.js -o distribution",
 		"test": "xo"
 	},
