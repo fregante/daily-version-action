@@ -1,0 +1,20 @@
+name: Auto build
+
+on:
+  push:
+    paths:
+      - 'index.js'
+      - '!distribution/index.js'
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - run: npm run package
+      - uses: fregante/setup-git-token@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - run: git commit -a -m 'Add packaged file'
+      - run: git push
