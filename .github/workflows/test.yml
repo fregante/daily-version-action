@@ -1,12 +1,29 @@
-name: CI
+name: Test
+
 on:
   - pull_request
   - push
 
 jobs:
-  test:
+  Lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: npm ci
       - run: npm test
+  Use:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: fregante/setup-git-token@v1 # This will allow saving the generated tag
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run Action
+        id: Version
+        uses: ./
+      - name: Test the action by deleting the tag it supposedly created
+        run: |
+          if [ yes = ${{ steps.Version.outputs.created }} ]; then
+            git push --delete origin ${{ steps.Version.outputs.version }}
+          fi

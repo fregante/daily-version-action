@@ -53,25 +53,44 @@ module.exports =
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
 const util = __webpack_require__(669);
+const dailyVersion = __webpack_require__(816);
 const execFile = util.promisify(__webpack_require__(129).execFile);
 
 async function init() {
-	await execFile('git', ['fetch', '--tags']);
-	const {stdout: tagOnHead} = await execFile('git', ['tag', '-l', '--points-at', 'HEAD']);
-	if (tagOnHead) {
-		console.log('::set-output name=version::' + tagOnHead);
-		console.log('No new commits since the last tag');
+	// Use ENV if it's a `push.tag` event
+	if (process.env.GITHUB_REF.startsWith('refs/tags/')) {
+		const pushedTag = process.env.GITHUB_REF.replace('refs/tags/', '');
+		console.log('::set-output name=version::' + process.env.GITHUB_REF.replace('refs/tags/', ''));
+		console.log('Run triggered by tag `' + pushedTag + '`. No new tags will be created by `daily-version-action`.');
 		return;
 	}
 
-	const {stdout: version} = await execFile('npx', ['daily-version']);
+	// Look for tags on the current commit
+	await execFile('git', ['fetch', '--depth=1', 'origin', 'refs/tags/*:refs/tags/*']);
+	const {stdout: tagsOnHead} = await execFile('git', ['tag', '-l', '--points-at', 'HEAD']);
+	if (tagsOnHead) {
+		const [mostRecentTag] = tagsOnHead.split('\n'); // `stdout` may contain multiple tags
+		console.log('::set-output name=version::' + mostRecentTag);
+		console.log('No new commits since the last tag (' + mostRecentTag + '). No new tags will be created by `daily-version-action`.');
+		return;
+	}
+
+	// A new tag must be created
+	const version = dailyVersion();
+	console.log('HEAD isn’t tagged. `daily-version-action` will create `' + version + '`');
+
 	console.log('::set-output name=version::' + version);
+
+	// Create tag and push it
 	await execFile('git', ['tag', version, '-m', version]);
-	await execFile('git', ['push', 'origin', '-m', version]);
+	await execFile('git', ['push', 'origin', version]);
 	console.log('::set-output name=created::yes');
 }
 
-init();
+init().catch(error => {
+	console.error(error);
+	process.exit(1);
+});
 
 
 /***/ }),
@@ -87,6 +106,71 @@ module.exports = require("child_process");
 /***/ (function(module) {
 
 module.exports = require("util");
+
+/***/ }),
+
+/***/ 816:
+/***/ (function(module, __unusedexports, __webpack_require__) {
+
+const {execFileSync} = __webpack_require__(129);
+const utcVersion = __webpack_require__(931);
+
+module.exports = (prefix = '') => {
+	const today = prefix + utcVersion({
+		short: true
+	});
+
+	const tagExists = execFileSync('git', ['tag', '-l', today], {
+		encoding: 'utf8'
+	});
+
+	if (!tagExists) {
+		return today;
+	}
+
+	// Return non-short version
+	return prefix + utcVersion();
+};
+
+
+/***/ }),
+
+/***/ 931:
+/***/ (function(module) {
+
+module.exports = function utcVersion (date = new Date(), options = {}) {
+  if (!(date instanceof Date)) {
+    options = date
+    date = new Date()
+  }
+
+  const {
+    apple = false,
+    short = false
+  } = options
+
+  const y = date.getUTCFullYear() - 2000
+  const m = date.getUTCMonth() + 1
+  const d = date.getUTCDate()
+
+  if (short) {
+    return y + '.' + m + '.' + d
+  }
+
+  if (apple) {
+    const divider = (86400 / 255)
+    const seconds = (date.getUTCHours() * 3600) + (date.getUTCMinutes() * 60) + date.getUTCSeconds()
+
+    const i = 1 + Math.floor(seconds / divider)
+
+    return y + '.' + m + '.' + d + 'i' + i
+  }
+
+  const t = (date.getUTCHours() * 100) + date.getUTCMinutes()
+
+  return y + '.' + m + '.' + d + '.' + t
+}
+
 
 /***/ })
 

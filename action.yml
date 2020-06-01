@@ -2,7 +2,7 @@ name: 'Daily Version'
 description: 'Creates a new tag using the format Y.M.D, but only if HEAD isn’t already tagged'
 icon: calendar
 branding:
-  icon: 'calendar'  
+  icon: 'calendar'
   color: 'purple'
 outputs:
   created:
