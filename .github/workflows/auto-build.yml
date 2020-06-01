@@ -1,10 +1,6 @@
 name: Auto build
 
 on:
-  pull_request:
-    paths:
-      - 'index.js'
-      - '!distribution/index.js'
   push:
     paths:
       - 'index.js'
@@ -20,6 +16,5 @@ jobs:
       - uses: fregante/setup-git-token@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - run: git add distribution/index.js
-      - run: git commit -m 'Add packaged file'
+      - run: git commit -a -m 'Add packaged file'
       - run: git push
