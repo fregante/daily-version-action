@@ -1,4 +1,5 @@
 const util = require('util');
+const dailyVersion = require('daily-version');
 const execFile = util.promisify(require('child_process').execFile);
 
 async function init() {
@@ -21,8 +22,7 @@ async function init() {
 	}
 
 	// A new tag must be created
-	const {stdout} = await execFile('npx', ['daily-version']);
-	const version = stdout.trim(); // `stdout` ends with \n
+	const version = dailyVersion();
 	console.log('HEAD isn’t tagged. `daily-version-action` will create `' + version + '`');
 
 	console.log('::set-output name=version::' + version);

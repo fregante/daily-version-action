@@ -53,6 +53,7 @@ module.exports =
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
 const util = __webpack_require__(669);
+const dailyVersion = __webpack_require__(566);
 const execFile = util.promisify(__webpack_require__(129).execFile);
 
 async function init() {
@@ -75,8 +76,7 @@ async function init() {
 	}
 
 	// A new tag must be created
-	const {stdout} = await execFile('npx', ['daily-version']);
-	const version = stdout.trim(); // `stdout` ends with \n
+	const version = dailyVersion();
 	console.log('HEAD isn’t tagged. `daily-version-action` will create `' + version + '`');
 
 	console.log('::set-output name=version::' + version);
@@ -99,6 +99,14 @@ init().catch(error => {
 /***/ (function(module) {
 
 module.exports = require("child_process");
+
+/***/ }),
+
+/***/ 566:
+/***/ (function(module) {
+
+module.exports = eval("require")("daily-version");
+
 
 /***/ }),
 
