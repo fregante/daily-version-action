@@ -18,7 +18,6 @@ See [action.yml](action.yml)
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: Create tag if necessary
-      if: github.event_name == 'schedule' # Ensures it only runs on a schedule
       uses: fregante/daily-version-action@v1
 ```
 
