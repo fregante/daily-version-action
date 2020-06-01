@@ -1,5 +1,7 @@
 # daily-version-action
 
+<img align="right" width="400" src="https://user-images.githubusercontent.com/1402241/83384901-7d691400-a3e8-11ea-8e70-068f6c4e0c30.png">
+
 Creates a new tag using the format `Y.M.D` (using [daily-version](https://github.com/fregante/daily-version)), but only if `HEAD` isn’t already tagged.
 
 Ideally used on schedule, but you could also change the suggested condition to only make it run on `master`.
