@@ -85,8 +85,8 @@ async function init() {
 	try {
 		await execFile('git', ['config', 'user.email']);
 	} catch (_) {
-		process.env.GIT_AUTHOR_EMAIL = 'actions@users.noreply.github.com';
-		process.env.GIT_AUTHOR_NAME = 'daily-version-action';
+		await execFile('git', ['config', 'user.email', 'actions@users.noreply.github.com']);
+		await execFile('git', ['config', 'user.name', 'daily-version-action']);
 	}
 
 	// Create tag and push it
