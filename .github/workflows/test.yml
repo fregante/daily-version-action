@@ -1,7 +1,9 @@
 name: Test
 
 on:
-  - push
+  push:
+    paths:
+      - distribution/index.js
 
 jobs:
   Run:
