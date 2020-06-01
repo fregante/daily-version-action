@@ -28,9 +28,8 @@ async function init() {
 	console.log('::set-output name=version::' + version);
 
 	// Ensure that the git user is set
-	try {
-		await execFile('git', ['config', 'user.email']);
-	} catch (_) {
+	const hasEmail = await execFile('git', ['config', 'user.email']).catch(_ => false);
+	if (!hasEmail) {
 		await execFile('git', ['config', 'user.email', 'actions@users.noreply.github.com']);
 		await execFile('git', ['config', 'user.name', 'daily-version-action']);
 	}
