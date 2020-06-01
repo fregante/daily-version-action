@@ -1,12 +1,16 @@
 {
 	"name": "daily-version-action",
 	"version": "1.0.0",
-	"description": "JavaScript Action Template",
+	"description": "Creates a new tag using the format Y.M.D, but only if HEAD isn’t already tagged",
 	"keywords": [
-		"deployment",
-		"automatic",
-		"Actions",
-		"JavaScript"
+		"version",
+		"release",
+		"year",
+		"time",
+		"tag",
+		"git",
+		"cli",
+		"automated"
 	],
 	"repository": "fregante/daily-version-action",
 	"license": "MIT",
