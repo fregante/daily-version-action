@@ -53,7 +53,7 @@ module.exports =
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
 const util = __webpack_require__(669);
-const dailyVersion = __webpack_require__(566);
+const dailyVersion = __webpack_require__(816);
 const execFile = util.promisify(__webpack_require__(129).execFile);
 
 async function init() {
@@ -102,18 +102,75 @@ module.exports = require("child_process");
 
 /***/ }),
 
-/***/ 566:
-/***/ (function(module) {
-
-module.exports = eval("require")("daily-version");
-
-
-/***/ }),
-
 /***/ 669:
 /***/ (function(module) {
 
 module.exports = require("util");
+
+/***/ }),
+
+/***/ 816:
+/***/ (function(module, __unusedexports, __webpack_require__) {
+
+const {execFileSync} = __webpack_require__(129);
+const utcVersion = __webpack_require__(931);
+
+module.exports = (prefix = '') => {
+	const today = prefix + utcVersion({
+		short: true
+	});
+
+	const tagExists = execFileSync('git', ['tag', '-l', today], {
+		encoding: 'utf8'
+	});
+
+	if (!tagExists) {
+		return today;
+	}
+
+	// Return non-short version
+	return prefix + utcVersion();
+};
+
+
+/***/ }),
+
+/***/ 931:
+/***/ (function(module) {
+
+module.exports = function utcVersion (date = new Date(), options = {}) {
+  if (!(date instanceof Date)) {
+    options = date
+    date = new Date()
+  }
+
+  const {
+    apple = false,
+    short = false
+  } = options
+
+  const y = date.getUTCFullYear() - 2000
+  const m = date.getUTCMonth() + 1
+  const d = date.getUTCDate()
+
+  if (short) {
+    return y + '.' + m + '.' + d
+  }
+
+  if (apple) {
+    const divider = (86400 / 255)
+    const seconds = (date.getUTCHours() * 3600) + (date.getUTCMinutes() * 60) + date.getUTCSeconds()
+
+    const i = 1 + Math.floor(seconds / divider)
+
+    return y + '.' + m + '.' + d + 'i' + i
+  }
+
+  const t = (date.getUTCHours() * 100) + date.getUTCMinutes()
+
+  return y + '.' + m + '.' + d + '.' + t
+}
+
 
 /***/ })
 

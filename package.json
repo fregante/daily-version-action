@@ -24,7 +24,7 @@
 		}
 	},
 	"dependencies": {
-		"daily-version": "^1.0.0"
+		"daily-version": "^2.0.0"
 	},
 	"devDependencies": {
 		"@zeit/ncc": "^0.22.3",
