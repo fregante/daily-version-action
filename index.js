@@ -27,6 +27,13 @@ async function init() {
 
 	console.log('::set-output name=version::' + version);
 
+	// Ensure that the git user is set
+	const {stdout: email} = await execFile('git', ['config', 'user.email']);
+	if (!email) {
+		await execFile('git', ['config', 'user.email', 'actions@users.noreply.github.com']);
+		await execFile('git', ['config', 'user.name', 'daily-version-action']);
+	}
+
 	// Create tag and push it
 	await execFile('git', ['tag', version, '-m', version]);
 	await execFile('git', ['push', 'origin', version]);
