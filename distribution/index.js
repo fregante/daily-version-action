@@ -84,7 +84,8 @@ async function init() {
 	}
 
 	// A new tag must be created
-	const version = dailyVersion();
+	const prefix = core.getInput('prefix') || '';
+	const version = dailyVersion(prefix);
 	core.info('HEAD isn’t tagged. `daily-version-action` will create `' + version + '`');
 
 	core.setOutput('version', version);

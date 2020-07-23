@@ -4,6 +4,9 @@ icon: calendar
 branding:
   icon: 'calendar'
   color: 'purple'
+inputs:
+  prefix:
+    description: 'Prefix to use for creating tag'
 outputs:
   created:
     description: 'If it exists, a new tag has been created'

@@ -18,6 +18,8 @@ See [action.yml](action.yml)
     - uses: actions/checkout@v2
     - name: Create tag if necessary
       uses: fregante/daily-version-action@v1
+      with:
+      prefix: v
 ```
 
 You can use the `created` and `version` outputs of this action to test whether a new version has been created, even [across jobs](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjobs_idoutputs):
