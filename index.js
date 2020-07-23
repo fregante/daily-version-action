@@ -1,3 +1,4 @@
+const core = require('@actions/core');
 const util = require('util');
 const dailyVersion = require('daily-version');
 const execFile = util.promisify(require('child_process').execFile);
@@ -6,8 +7,8 @@ async function init() {
 	// Use ENV if it's a `push.tag` event
 	if (process.env.GITHUB_REF.startsWith('refs/tags/')) {
 		const pushedTag = process.env.GITHUB_REF.replace('refs/tags/', '');
-		console.log('::set-output name=version::' + process.env.GITHUB_REF.replace('refs/tags/', ''));
-		console.log('Run triggered by tag `' + pushedTag + '`. No new tags will be created by `daily-version-action`.');
+		core.setOutput('version', process.env.GITHUB_REF.replace('refs/tags/', ''));
+		core.warning('Run triggered by tag `' + pushedTag + '`. No new tags will be created by `daily-version-action`.');
 		return;
 	}
 
@@ -16,16 +17,16 @@ async function init() {
 	const {stdout: tagsOnHead} = await execFile('git', ['tag', '-l', '--points-at', 'HEAD']);
 	if (tagsOnHead) {
 		const [mostRecentTag] = tagsOnHead.split('\n'); // `stdout` may contain multiple tags
-		console.log('::set-output name=version::' + mostRecentTag);
-		console.log('No new commits since the last tag (' + mostRecentTag + '). No new tags will be created by `daily-version-action`.');
+		core.setOutput('version', mostRecentTag);
+		core.warning('No new commits since the last tag (' + mostRecentTag + '). No new tags will be created by `daily-version-action`.');
 		return;
 	}
 
 	// A new tag must be created
 	const version = dailyVersion();
-	console.log('HEAD isn’t tagged. `daily-version-action` will create `' + version + '`');
+	core.debug('HEAD isn’t tagged. `daily-version-action` will create `' + version + '`');
 
-	console.log('::set-output name=version::' + version);
+	core.setOutput('version', version);
 
 	// Ensure that the git user is set
 	const hasEmail = await execFile('git', ['config', 'user.email']).catch(_ => false);
@@ -37,10 +38,9 @@ async function init() {
 	// Create tag and push it
 	await execFile('git', ['tag', version, '-m', version]);
 	await execFile('git', ['push', 'origin', version]);
-	console.log('::set-output name=created::yes');
+	core.setOutput('created', 'yes');
 }
 
 init().catch(error => {
-	console.error(error.name, error.message);
-	process.exit(1);
+	core.setFailed(error.name + ' ' + error.message);
 });
