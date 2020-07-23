@@ -68,7 +68,7 @@ async function init() {
 	// Use ENV if it's a `push.tag` event
 	if (process.env.GITHUB_REF.startsWith('refs/tags/')) {
 		const pushedTag = process.env.GITHUB_REF.replace('refs/tags/', '');
-		core.setOutput('version', process.env.GITHUB_REF.replace('refs/tags/', ''))
+		core.setOutput('version', process.env.GITHUB_REF.replace('refs/tags/', ''));
 		core.warning('Run triggered by tag `' + pushedTag + '`. No new tags will be created by `daily-version-action`.');
 		return;
 	}
@@ -78,7 +78,7 @@ async function init() {
 	const {stdout: tagsOnHead} = await execFile('git', ['tag', '-l', '--points-at', 'HEAD']);
 	if (tagsOnHead) {
 		const [mostRecentTag] = tagsOnHead.split('\n'); // `stdout` may contain multiple tags
-		core.setOutput('version',  mostRecentTag);
+		core.setOutput('version', mostRecentTag);
 		core.warning('No new commits since the last tag (' + mostRecentTag + '). No new tags will be created by `daily-version-action`.');
 		return;
 	}
