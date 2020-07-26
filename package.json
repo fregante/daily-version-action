@@ -34,6 +34,6 @@
 	"devDependencies": {
 		"@actions/core": "^1.2.4",
 		"@zeit/ncc": "^0.22.3",
-		"xo": "^0.30.0"
+		"xo": "^0.32.1"
 	}
 }
