@@ -4,6 +4,9 @@ icon: calendar
 branding:
   icon: 'calendar'
   color: 'purple'
+inputs:
+  prefix:
+    description: 'String to prepend to the tag name'
 outputs:
   created:
     description: 'If it exists, a new tag has been created'
