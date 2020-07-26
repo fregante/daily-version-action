@@ -18,8 +18,6 @@ See [action.yml](action.yml)
     - uses: actions/checkout@v2
     - name: Create tag if necessary
       uses: fregante/daily-version-action@v1
-      with:
-      prefix: v
 ```
 
 You can use the `created` and `version` outputs of this action to test whether a new version has been created, even [across jobs](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjobs_idoutputs):
@@ -35,7 +33,17 @@ You can use the `created` and `version` outputs of this action to test whether a
 
 ## Inputs
 
-None.
+- `prefix` - Optional. You can specify what to prefix the tag name with. For example:
+
+```yaml
+  Version:
+    steps:
+    - uses: actions/checkout@v2
+    - name: Create tag if necessary
+      uses: fregante/daily-version-action@v1
+      with:
+        prefix: v # This will cause the tags to start with v, like "v20.12.31`
+```
 
 ## Outputs
 
