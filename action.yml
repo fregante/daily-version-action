@@ -6,7 +6,7 @@ branding:
   color: 'purple'
 inputs:
   prefix:
-    description: 'Prefix to use for creating tag'
+    description: 'String to prepend to the tag name'
 outputs:
   created:
     description: 'If it exists, a new tag has been created'
