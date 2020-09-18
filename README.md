@@ -51,3 +51,34 @@ You can use the `created` and `version` outputs of this action to test whether a
 - `version` - The latest tag, whether it already existed or if it just created one.
 
 Outputs can be [used across jobs](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjobs_idoutputs) as well.
+
+## Examples
+
+### Nightly release
+
+Here's a complete workflow to create a nightly release, when necessary: ([original here](https://github.com/notlmn/browser-extension-template/blob/9b284ce97a5389f8a7c5d3aebe7cb8cf0c9df0a9/.github/workflows/deployment.yml))
+
+```yml
+on:
+  schedule:
+    - cron: '59 23 * * *'
+
+jobs:
+  Tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: fregante/daily-version-action@v1
+        name: Create tag if necessary
+        id: daily-version
+    outputs: # Shares the action’s outputs to the Next jobs
+      created: ${{ steps.daily-version.outputs.created }}
+      version: ${{ steps.daily-version.outputs.version }}
+        
+  Next:
+    needs: Tag
+    if: needs.Tag.outputs.created
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo It looks like ${{ needs.Tag.outputs.version }} was created!
+```
