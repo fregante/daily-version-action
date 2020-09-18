@@ -15,11 +15,12 @@ jobs:
         with:
           fetch-depth: 50
       - run: git tag ${{ github.event.inputs.Version }}
-      - uses: notlmn/release-with-changelog@v2
+      - uses: notlmn/release-with-changelog@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          exclude: '^Meta'
+          exclude: ^Meta
+          template: '{commits}'
       - name: Update major tag
         run: |
           MAJOR=$(echo ${{ github.event.inputs.Version }} | sed 's/\..*//')
-          git push origin HEAD:refs/tags/$MAJOR -f
+          git push origin HEAD:refs/tags/$MAJOR --force
