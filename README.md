@@ -56,7 +56,7 @@ Outputs can be [used across jobs](https://help.github.com/en/actions/reference/w
 
 ### Nightly release
 
-Here's a complete workflow to create a nightly release, when necessary: ([original here](https://github.com/notlmn/browser-extension-template/blob/9b284ce97a5389f8a7c5d3aebe7cb8cf0c9df0a9/.github/workflows/deployment.yml))
+Here's a complete workflow to create a nightly release, when necessary: ([original here](https://github.com/fregante/ghatemplates#webextreleaseyml))
 
 ```yml
 on:
