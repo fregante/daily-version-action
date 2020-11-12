@@ -6,9 +6,7 @@ const execFile = util.promisify(require('child_process').execFile);
 async function init() {
 	// Use ENV if it's a `push.tag` event
 	if (process.env.GITHUB_REF.startsWith('refs/tags/')) {
-		const pushedTag = process.env.GITHUB_REF.replace('refs/tags/', '');
-		core.setOutput('version', process.env.GITHUB_REF.replace('refs/tags/', ''));
-		core.info('Run triggered by tag `' + pushedTag + '`. No new tags will be created by `daily-version-action`.');
+		const pushedTag = process.env.MY_REF.replace('refs/tags/', '');
 		return;
 	}
 
