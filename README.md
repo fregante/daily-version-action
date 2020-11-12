@@ -82,3 +82,10 @@ jobs:
     steps:
       - run: echo It looks like ${{ needs.Tag.outputs.version }} was created!
 ```
+
+## Related
+
+- 🛕 [action-release](https://github.com/fregante/ghatemplates/blob/master/readme.md#action-release) - A workflow to help you release your actions.
+- [title-to-labels-action](https://github.com/fregante/title-to-labels-action) - Cleans up the titles of issues and PRs from common opening keywords.
+- [release-with-changelog](https://github.com/notlmn/release-with-changelog) - Creates reasonable enough GitHub releases for pushed tags, with the commit log as release body.
+- [setup-git-user](https://github.com/fregante/setup-git-user) - GitHub Action that sets git user and email to enable commiting.
