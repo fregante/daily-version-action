@@ -1,7 +1,10 @@
-const core = require('@actions/core');
-const util = require('util');
-const dailyVersion = require('daily-version');
-const execFile = util.promisify(require('child_process').execFile);
+import {promisify} from 'node:util';
+import process from 'node:process';
+import {execFile} from 'node:child_process';
+import * as core from '@actions/core';
+import dailyVersion from 'daily-version';
+
+const exec = promisify(execFile);
 
 async function init() {
 	// Use ENV if it's a `push.tag` event
@@ -13,9 +16,8 @@ async function init() {
 	}
 
 	// Look for tags on the current commit
-	await execFile('git', ['fetch', '--depth=1', 'origin', 'refs/tags/*:refs/tags/*'])
-		.catch(() => {/* There might be no tags at all */});
-	const {stdout: tagsOnHead} = await execFile('git', ['tag', '-l', '--points-at', 'HEAD']);
+	await exec('git', ['fetch', '--depth=1', 'origin', 'refs/tags/*:refs/tags/*']);
+	const {stdout: tagsOnHead} = await exec('git', ['tag', '-l', '--points-at', 'HEAD']);
 	if (tagsOnHead) {
 		const [mostRecentTag] = tagsOnHead.split('\n'); // `stdout` may contain multiple tags
 		core.setOutput('version', mostRecentTag);
@@ -30,15 +32,15 @@ async function init() {
 	core.setOutput('version', version);
 
 	// Ensure that the git user is set
-	const hasEmail = await execFile('git', ['config', 'user.email']).catch(_ => false);
+	const hasEmail = await exec('git', ['config', 'user.email']).catch(_ => false);
 	if (!hasEmail) {
-		await execFile('git', ['config', 'user.email', 'actions@users.noreply.github.com']);
-		await execFile('git', ['config', 'user.name', 'daily-version-action']);
+		await exec('git', ['config', 'user.email', 'actions@users.noreply.github.com']);
+		await exec('git', ['config', 'user.name', 'daily-version-action']);
 	}
 
 	// Create tag and push it
-	await execFile('git', ['tag', version, '-m', version]);
-	await execFile('git', ['push', 'origin', version]);
+	await exec('git', ['tag', version, '-m', version]);
+	await exec('git', ['push', 'origin', version]);
 	core.setOutput('created', 'yes');
 }
 

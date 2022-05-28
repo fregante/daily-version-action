@@ -4,7 +4,9 @@
 
 Creates a new tag using the format `Y.M.D` (using [daily-version](https://github.com/fregante/daily-version)), but only if `HEAD` isn’t already tagged.
 
-Ideally used on schedule, but you could also change the suggested condition to only make it run on `master`.
+Ideally used on schedule, but you could also change the suggested condition to only make it run on `main`.
+
+See usage real-world [example on Refined GitHub’s repo](https://github.com/refined-github/refined-github/blob/5cda3447bf80cca0c64ae5eb79779ecd62fec18e/.github/workflows/release.yml#L30-L32)
 
 ## Usage
 
@@ -17,7 +19,7 @@ See [action.yml](action.yml)
     steps:
     - uses: actions/checkout@v2
     - name: Create tag if necessary
-      uses: fregante/daily-version-action@v1
+      uses: fregante/daily-version-action@v2
 ```
 
 You can use the `created` and `version` outputs of this action to test whether a new version has been created, even [across jobs](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjobs_idoutputs):
@@ -25,7 +27,7 @@ You can use the `created` and `version` outputs of this action to test whether a
 ```yaml
     - name: 'Create tag if necessary'
       id: version
-      uses: fregante/daily-version-action@v1
+      uses: fregante/daily-version-action@v2
     - name: 'Created?'
       if: steps.version.outputs.created
       runs: echo 'Created!' ${{ steps.version.outputs.version }}
@@ -40,7 +42,7 @@ You can use the `created` and `version` outputs of this action to test whether a
     steps:
     - uses: actions/checkout@v2
     - name: Create tag if necessary
-      uses: fregante/daily-version-action@v1
+      uses: fregante/daily-version-action@v2
       with:
         prefix: v # This will cause the tags to start with v, like "v20.12.31`
 ```
@@ -68,13 +70,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: fregante/daily-version-action@v1
+      - uses: fregante/daily-version-action@v2
         name: Create tag if necessary
         id: daily-version
     outputs: # Shares the action’s outputs to the Next jobs
       created: ${{ steps.daily-version.outputs.created }}
       version: ${{ steps.daily-version.outputs.version }}
-        
+
   Next:
     needs: Tag
     if: needs.Tag.outputs.created
@@ -85,7 +87,7 @@ jobs:
 
 ## Related
 
-- 🛕 [action-release](https://github.com/fregante/ghatemplates/blob/master/readme.md#action-release) - A workflow to help you release your actions.
+- 🛕 [action-release](https://github.com/fregante/ghatemplates/blob/main/readme.md#action-release) - A workflow to help you release your actions.
 - [title-to-labels-action](https://github.com/fregante/title-to-labels-action) - Cleans up the titles of issues and PRs from common opening keywords.
 - [release-with-changelog](https://github.com/notlmn/release-with-changelog) - Creates reasonable enough GitHub releases for pushed tags, with the commit log as release body.
 - [setup-git-user](https://github.com/fregante/setup-git-user) - GitHub Action that sets git user and email to enable commiting.
