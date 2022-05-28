@@ -196,8 +196,8 @@ async function init() {
 	// Use ENV if it's a `push.tag` event
 	if (node_process__WEBPACK_IMPORTED_MODULE_1___default().env.GITHUB_REF.startsWith('refs/tags/')) {
 		const pushedTag = node_process__WEBPACK_IMPORTED_MODULE_1___default().env.GITHUB_REF.replace('refs/tags/', '');
-		_actions_core__WEBPACK_IMPORTED_MODULE_3___default().setOutput('version', node_process__WEBPACK_IMPORTED_MODULE_1___default().env.GITHUB_REF.replace('refs/tags/', ''));
-		_actions_core__WEBPACK_IMPORTED_MODULE_3___default().info('Run triggered by tag `' + pushedTag + '`. No new tags will be created by `daily-version-action`.');
+		_actions_core__WEBPACK_IMPORTED_MODULE_3__.setOutput('version', node_process__WEBPACK_IMPORTED_MODULE_1___default().env.GITHUB_REF.replace('refs/tags/', ''));
+		_actions_core__WEBPACK_IMPORTED_MODULE_3__.info('Run triggered by tag `' + pushedTag + '`. No new tags will be created by `daily-version-action`.');
 		return;
 	}
 
@@ -206,16 +206,16 @@ async function init() {
 	const {stdout: tagsOnHead} = await exec('git', ['tag', '-l', '--points-at', 'HEAD']);
 	if (tagsOnHead) {
 		const [mostRecentTag] = tagsOnHead.split('\n'); // `stdout` may contain multiple tags
-		_actions_core__WEBPACK_IMPORTED_MODULE_3___default().setOutput('version', mostRecentTag);
-		_actions_core__WEBPACK_IMPORTED_MODULE_3___default().info('No new commits since the last tag (' + mostRecentTag + '). No new tags will be created by `daily-version-action`.');
+		_actions_core__WEBPACK_IMPORTED_MODULE_3__.setOutput('version', mostRecentTag);
+		_actions_core__WEBPACK_IMPORTED_MODULE_3__.info('No new commits since the last tag (' + mostRecentTag + '). No new tags will be created by `daily-version-action`.');
 		return;
 	}
 
 	// A new tag must be created
-	const version = daily_version__WEBPACK_IMPORTED_MODULE_4___default()(_actions_core__WEBPACK_IMPORTED_MODULE_3___default().getInput('prefix'));
-	_actions_core__WEBPACK_IMPORTED_MODULE_3___default().info('HEAD isn’t tagged. `daily-version-action` will create `' + version + '`');
+	const version = daily_version__WEBPACK_IMPORTED_MODULE_4___default()(_actions_core__WEBPACK_IMPORTED_MODULE_3__.getInput('prefix'));
+	_actions_core__WEBPACK_IMPORTED_MODULE_3__.info('HEAD isn’t tagged. `daily-version-action` will create `' + version + '`');
 
-	_actions_core__WEBPACK_IMPORTED_MODULE_3___default().setOutput('version', version);
+	_actions_core__WEBPACK_IMPORTED_MODULE_3__.setOutput('version', version);
 
 	// Ensure that the git user is set
 	const hasEmail = await exec('git', ['config', 'user.email']).catch(_ => false);
@@ -227,11 +227,11 @@ async function init() {
 	// Create tag and push it
 	await exec('git', ['tag', version, '-m', version]);
 	await exec('git', ['push', 'origin', version]);
-	_actions_core__WEBPACK_IMPORTED_MODULE_3___default().setOutput('created', 'yes');
+	_actions_core__WEBPACK_IMPORTED_MODULE_3__.setOutput('created', 'yes');
 }
 
 init().catch(error => {
-	_actions_core__WEBPACK_IMPORTED_MODULE_3___default().setFailed(error.name + ' ' + error.message);
+	_actions_core__WEBPACK_IMPORTED_MODULE_3__.setFailed(error.name + ' ' + error.message);
 });
 
 
