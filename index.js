@@ -1,7 +1,7 @@
 import {promisify} from 'node:util';
 import process from 'node:process';
 import {execFile} from 'node:child_process';
-import core from '@actions/core';
+import * as core from '@actions/core';
 import dailyVersion from 'daily-version';
 
 const exec = promisify(execFile);
