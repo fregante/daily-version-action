@@ -1,17 +1,17 @@
-name: 'Daily Version'
-description: 'Creates a new tag using the format Y.M.D, but only if HEAD isn’t already tagged'
+name: Daily Version
+description: Creates a new tag using the format Y.M.D, but only if HEAD isn’t already tagged
 icon: calendar
 branding:
-  icon: 'calendar'
-  color: 'purple'
+  icon: calendar
+  color: purple
 inputs:
   prefix:
-    description: 'String to prepend to the tag name'
+    description: String to prepend to the tag name
 outputs:
   created:
-    description: 'If it exists, a new tag has been created'
+    description: If it exists, a new tag has been created
   version:
-    description: 'The latest version tag, either pre-existing or just created'
+    description: The latest version tag, either pre-existing or just created
 runs:
-  using: 'node16'
-  main: 'distribution/index.js'
+  using: node16
+  main: distribution/index.js
