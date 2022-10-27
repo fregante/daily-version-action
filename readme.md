@@ -10,7 +10,7 @@ See usage real-world [example on Refined GitHub’s repo](https://github.com/ref
 
 ## Usage
 
-It expects `git` to be configured to push to the same repo. The `v2` of `actions/checkout` automatically sets required token and, if not set, this action will use the git user `daily-version-action <actions@users.noreply.github.com>` to create the tag. This can be customized with something like [setup-git-token](https://github.com/fregante/setup-git-token).
+It expects `git` to be configured to push to the same repo. The `v2` and later of `actions/checkout` automatically sets required token and, if not set, this action will use the git user `daily-version-action <actions@users.noreply.github.com>` to create the tag. This can be customized with something like [setup-git-token](https://github.com/fregante/setup-git-token).
 
 See [action.yml](action.yml)
 
@@ -22,15 +22,25 @@ See [action.yml](action.yml)
       uses: fregante/daily-version-action@v2
 ```
 
-You can use the `created` and `version` outputs of this action to test whether a new version has been created, even [across jobs](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjobs_idoutputs):
+You can use the `DAILY_VERSION_CREATED` and `DAILY_VERSION` environment variables created by this action to test whether a new version has been created:
 
 ```yaml
-    - name: 'Create tag if necessary'
+    - name: Create tag if necessary
+      uses: fregante/daily-version-action@v2
+    - name: Created?
+      if: env.DAILY_VERSION_CREATED
+      runs: echo "Yes, created $DAILY_VERSION"
+```
+
+If you prefer, you can use its outputs too, which can also work [across jobs](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjobs_idoutputs):
+
+```yaml
+    - name: Create tag if necessary
       id: version
       uses: fregante/daily-version-action@v2
-    - name: 'Created?'
+    - name: Created?
       if: steps.version.outputs.created
-      runs: echo 'Created!' ${{ steps.version.outputs.version }}
+      runs: echo "Created ${{ steps.version.outputs.version }}"
 ```
 
 ## Inputs

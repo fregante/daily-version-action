@@ -40,6 +40,7 @@ async function init() {
 	core.info(`HEAD isn’t tagged. \`daily-version-action\` will create \`${version}\``);
 
 	core.setOutput('version', version);
+	core.exportVariable('version', version);
 
 	// Ensure that the git user is set
 	const hasEmail = await exec('git', ['config', 'user.email']).catch(_ => false);
@@ -56,6 +57,7 @@ async function init() {
 	await exec('git', ['tag', version, '-m', version]);
 	await exec('git', ['push', 'origin', version]);
 	core.setOutput('created', 'yes');
+	core.exportVariable('created', 'yes');
 }
 
 init().catch(error => {
