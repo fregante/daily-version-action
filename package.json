@@ -31,8 +31,8 @@
 		"daily-version": "^2.0.0"
 	},
 	"devDependencies": {
-		"@actions/core": "^1.8.2",
-		"@zeit/ncc": "^0.22.3",
-		"xo": "^0.50.0"
+		"@actions/core": "^1.10.0",
+		"@vercel/ncc": "^0.34.0",
+		"xo": "^0.52.4"
 	}
 }
