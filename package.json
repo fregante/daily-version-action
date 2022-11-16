@@ -33,6 +33,6 @@
 	"devDependencies": {
 		"@actions/core": "^1.10.0",
 		"@vercel/ncc": "^0.34.0",
-		"xo": "^0.52.4"
+		"xo": "^0.53.0"
 	}
 }
