@@ -2,8 +2,8 @@ name: Test
 
 on:
   push:
-    paths:
-      - distribution/index.js
+    # paths:
+    #   - distribution/index.js
 
 jobs:
   Run:
@@ -15,6 +15,16 @@ jobs:
         uses: ./
       - name: Test the action by deleting the tag it supposedly created
         run: |
-          if [ yes = ${{ steps.Version.outputs.created }} ]; then
-            git push --delete origin ${{ steps.Version.outputs.version }}
-          fi
+          # Test outputs
+          test ${{ steps.Version.outputs.version }}
+          test ${{ steps.Version.outputs.created }}
+
+          # Show and test ENVs
+          echo DAILY_VERSION=$DAILY_VERSION
+          echo DAILY_VERSION_CREATED=$DAILY_VERSION_CREATED
+          test $DAILY_VERSION
+          test $DAILY_VERSION_CREATED
+
+          # Test tag
+          git show-ref --tags "refs/tags/$DAILY_VERSION"
+          git push --delete origin "$DAILY_VERSION"
