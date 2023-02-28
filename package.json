@@ -1,6 +1,5 @@
 {
-	"name": "daily-version-action",
-	"version": "1.0.0",
+	"private": true,
 	"description": "Creates a new tag using the format Y.M.D, but only if HEAD isn’t already tagged",
 	"keywords": [
 		"version",
@@ -32,7 +31,7 @@
 	},
 	"devDependencies": {
 		"@actions/core": "^1.10.0",
-		"@vercel/ncc": "^0.34.0",
-		"xo": "^0.52.4"
+		"@vercel/ncc": "^0.36.1",
+		"xo": "^0.53.1"
 	}
 }

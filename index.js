@@ -60,6 +60,7 @@ async function init() {
 	core.exportVariable('DAILY_VERSION_CREATED', 'yes');
 }
 
+// eslint-disable-next-line unicorn/prefer-top-level-await -- ncc support?
 init().catch(error => {
 	core.setFailed(error.name + ' ' + error.message);
 });

@@ -17,7 +17,7 @@ See [action.yml](action.yml)
 ```yaml
   Version:
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Create tag if necessary
       uses: fregante/daily-version-action@v2
 ```
@@ -50,7 +50,7 @@ If you prefer, you can use its outputs too, which can also work [across jobs](ht
 ```yaml
   Version:
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Create tag if necessary
       uses: fregante/daily-version-action@v2
       with:
@@ -79,10 +79,10 @@ jobs:
   Tag:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: fregante/daily-version-action@v2
-        name: Create tag if necessary
-        id: daily-version
+    - uses: actions/checkout@v3
+    - uses: fregante/daily-version-action@v2
+      name: Create tag if necessary
+      id: daily-version
     outputs: # Shares the action’s outputs to the Next jobs
       created: ${{ steps.daily-version.outputs.created }}
       version: ${{ steps.daily-version.outputs.version }}
@@ -99,5 +99,4 @@ jobs:
 
 - 🛕 [action-release](https://github.com/fregante/ghatemplates/blob/main/readme.md#action-release) - A workflow to help you release your actions.
 - [title-to-labels-action](https://github.com/fregante/title-to-labels-action) - Cleans up the titles of issues and PRs from common opening keywords.
-- [release-with-changelog](https://github.com/notlmn/release-with-changelog) - Creates reasonable enough GitHub releases for pushed tags, with the commit log as release body.
-- [setup-git-user](https://github.com/fregante/setup-git-user) - GitHub Action that sets git user and email to enable commiting.
+- [setup-git-user](https://github.com/fregante/setup-git-user) - GitHub Action that sets git user and email to enable committing.
