@@ -2970,7 +2970,7 @@ async function init() {
 		'--depth=1',
 		'origin',
 		'refs/tags/*:refs/tags/*',
-	]);
+	]).catch(() => {}); // It might be a new repo #18
 	const {stdout: tagsOnHead} = await exec('git', [
 		'tag',
 		'-l',
