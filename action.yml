@@ -13,5 +13,5 @@ outputs:
   version:
     description: The latest version tag, either pre-existing or just created
 runs:
-  using: node16
+  using: node20
   main: distribution/index.js
