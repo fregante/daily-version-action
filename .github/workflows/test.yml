@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - distribution/index.js
+      - .github/workflows/test.yml
 
 jobs:
   Run:
@@ -27,4 +28,25 @@ jobs:
 
           # Test tag
           git show-ref --tags "refs/tags/$DAILY_VERSION"
-          git push --delete origin "$DAILY_VERSION"
+      - name: Run Action twice
+        id: Version2
+        uses: ./
+      - name: Test the action again
+        run: |
+          # Test outputs
+          test ${{ steps.Version2.outputs.version }}
+          test ${{ steps.Version2.outputs.created }}
+
+          # Show and test ENVs
+          echo DAILY_VERSION=$DAILY_VERSION
+          echo DAILY_VERSION_CREATED=$DAILY_VERSION_CREATED
+          test $DAILY_VERSION
+          test $DAILY_VERSION_CREATED
+
+          # Test tag
+          git show-ref --tags "refs/tags/$DAILY_VERSION"
+      - name: Cleanup
+        if: always()
+        run: |
+          git push --delete origin "${{ steps.Version.outputs.version }}"
+          git push --delete origin "${{ steps.Version2.outputs.version }}"
