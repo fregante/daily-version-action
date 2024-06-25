@@ -20,9 +20,7 @@ jobs:
           test ${{ steps.Version.outputs.version }}
           test ${{ steps.Version.outputs.created }}
 
-          # Show and test ENVs
-          echo DAILY_VERSION=$DAILY_VERSION
-          echo DAILY_VERSION_CREATED=$DAILY_VERSION_CREATED
+          # Test ENVs
           test $DAILY_VERSION
           test $DAILY_VERSION_CREATED
 
@@ -35,18 +33,12 @@ jobs:
         run: |
           # Test outputs
           test ${{ steps.Version2.outputs.version }}
-          test ${{ steps.Version2.outputs.created }}
+          test -v ${{ steps.Version2.outputs.created }}
 
-          # Show and test ENVs
-          echo DAILY_VERSION=$DAILY_VERSION
-          echo DAILY_VERSION_CREATED=$DAILY_VERSION_CREATED
+          # Test ENVs
           test $DAILY_VERSION
-          test $DAILY_VERSION_CREATED
-
-          # Test tag
-          git show-ref --tags "refs/tags/$DAILY_VERSION"
+          test -v $DAILY_VERSION_CREATED
       - name: Cleanup
         if: always()
         run: |
           git push --delete origin "${{ steps.Version.outputs.version }}"
-          git push --delete origin "${{ steps.Version2.outputs.version }}"
