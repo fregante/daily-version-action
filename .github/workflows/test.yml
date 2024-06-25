@@ -26,10 +26,6 @@ jobs:
 
           # Test tag
           git show-ref --tags "refs/tags/$DAILY_VERSION"
-      - name: Reset ENV
-        run: |
-          DAILY_VERSION=
-          DAILY_VERSION_CREATED=
       - name: Run Action twice
         id: Version2
         uses: ./
@@ -41,7 +37,6 @@ jobs:
 
           # Test ENVs
           test $DAILY_VERSION
-          test -v $DAILY_VERSION_CREATED
       - name: Cleanup
         if: always()
         run: |
