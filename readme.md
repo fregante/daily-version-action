@@ -19,7 +19,7 @@ See [action.yml](action.yml)
 ```yaml
   Version:
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Create tag if necessary
       uses: fregante/daily-version-action@v3
 ```
@@ -52,7 +52,7 @@ If you prefer, you can use its outputs too, which can also work [across jobs](ht
 ```yaml
   Version:
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Create tag if necessary
       uses: fregante/daily-version-action@v3
       with:
@@ -81,7 +81,7 @@ jobs:
   Tag:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - uses: fregante/daily-version-action@v3
       name: Create tag if necessary
       id: daily-version
