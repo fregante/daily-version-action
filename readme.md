@@ -10,23 +10,25 @@ See usage real-world [example on Refined GitHub’s repo](https://github.com/ref
 
 ## Usage
 
-It expects `git` to be configured to push to the same repo. The `v2` and later of `actions/checkout` automatically sets required token and, if not set, this action will use the git user `daily-version-action <actions@users.noreply.github.com>` to create the tag. This can be customized with something like [setup-git-token](https://github.com/fregante/setup-git-token).
+It expects `git` to be configured to push to the same repo. 
+- `actions/checkout` automatically sets required token to push the tag to the repo.
+- If not already set, the tag author will be `daily-version-action <actions@users.noreply.github.com>`. This can be customized with something like [setup-git-token](https://github.com/fregante/setup-git-token).
 
 See [action.yml](action.yml)
 
 ```yaml
   Version:
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Create tag if necessary
-      uses: fregante/daily-version-action@v2
+      uses: fregante/daily-version-action@v3
 ```
 
 You can use the `DAILY_VERSION_CREATED` and `DAILY_VERSION` environment variables created by this action to test whether a new version has been created:
 
 ```yaml
     - name: Create tag if necessary
-      uses: fregante/daily-version-action@v2
+      uses: fregante/daily-version-action@v3
     - name: Created?
       if: env.DAILY_VERSION_CREATED
       runs: echo "Yes, created $DAILY_VERSION"
@@ -37,7 +39,7 @@ If you prefer, you can use its outputs too, which can also work [across jobs](ht
 ```yaml
     - name: Create tag if necessary
       id: version
-      uses: fregante/daily-version-action@v2
+      uses: fregante/daily-version-action@v3
     - name: Created?
       if: steps.version.outputs.created
       runs: echo "Created ${{ steps.version.outputs.version }}"
@@ -50,9 +52,9 @@ If you prefer, you can use its outputs too, which can also work [across jobs](ht
 ```yaml
   Version:
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Create tag if necessary
-      uses: fregante/daily-version-action@v2
+      uses: fregante/daily-version-action@v3
       with:
         prefix: v # This will cause the tags to start with v, like "v20.12.31`
 ```
@@ -79,8 +81,8 @@ jobs:
   Tag:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: fregante/daily-version-action@v2
+    - uses: actions/checkout@v6
+    - uses: fregante/daily-version-action@v3
       name: Create tag if necessary
       id: daily-version
     outputs: # Shares the action’s outputs to the Next jobs
