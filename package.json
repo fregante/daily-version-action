@@ -16,14 +16,14 @@
 	"author": "fregante",
 	"scripts": {
 		"build": "ncc build index.js -o distribution",
-		"test": "xo index.js"
+		"test": "xo --ignore=distribution/**"
 	},
 	"engines": {
 		"node": ">=24"
 	},
 	"xo": {
 		"ignores": [
-			"distribution"
+			"distribution/**"
 		],
 		"rules": {
 			"unicorn/no-process-exit": "off"
