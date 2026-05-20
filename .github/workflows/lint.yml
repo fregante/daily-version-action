@@ -17,4 +17,4 @@ jobs:
         with:
           node-version: 24
       - run: npm ci
-      - run: npx xo --ignore=distribution/**
+      - run: npx xo

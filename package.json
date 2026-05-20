@@ -16,7 +16,7 @@
 	"author": "fregante",
 	"scripts": {
 		"build": "ncc build index.js -o distribution",
-		"test": "xo --ignore=distribution/**"
+		"test": "xo"
 	},
 	"engines": {
 		"node": ">=24"
