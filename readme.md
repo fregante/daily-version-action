@@ -2,11 +2,11 @@
 
 <img align="right" width="400" src="https://user-images.githubusercontent.com/1402241/83384901-7d691400-a3e8-11ea-8e70-068f6c4e0c30.png">
 
-Creates a new tag using the format `Y.M.D` (using [daily-version](https://github.com/fregante/daily-version)), but only if `HEAD` isn’t already tagged.
+Creates a new tag using the format `Y.M.D` (using [daily-version](https://github.com/fregante/daily-version)), but only if `HEAD` isn't already tagged.
 
 Ideally used on schedule, but you could also change the suggested condition to only make it run on `main`.
 
-See usage real-world [example on Refined GitHub’s repo](https://github.com/refined-github/refined-github/blob/5cda3447bf80cca0c64ae5eb79779ecd62fec18e/.github/workflows/release.yml#L30-L32)
+See usage real-world [example on Refined GitHub's repo](https://github.com/refined-github/refined-github/blob/5cda3447bf80cca0c64ae5eb79779ecd62fec18e/.github/workflows/release.yml#L30-L32)
 
 ## Usage
 
@@ -31,7 +31,7 @@ You can use the `DAILY_VERSION_CREATED` and `DAILY_VERSION` environment variable
       uses: fregante/daily-version-action@v3
     - name: Created?
       if: env.DAILY_VERSION_CREATED
-      runs: echo "Yes, created $DAILY_VERSION"
+      run: echo "Yes, created $DAILY_VERSION"
 ```
 
 If you prefer, you can use its outputs too, which can also work [across jobs](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjobs_idoutputs):
@@ -42,12 +42,13 @@ If you prefer, you can use its outputs too, which can also work [across jobs](ht
       uses: fregante/daily-version-action@v3
     - name: Created?
       if: steps.version.outputs.created
-      runs: echo "Created ${{ steps.version.outputs.version }}"
+      run: echo "Created ${{ steps.version.outputs.version }}"
 ```
 
 ## Inputs
 
-- `prefix` - Optional. You can specify what to prefix the tag name with. For example:
+- `prefix` - Optional. String to prepend to the tag name. For example, `v` will create tags like `v20.12.31`.
+- `custom-version` - Optional. Override the version number instead of generating one with daily-version. Tag creation logic still applies.
 
 ```yaml
   Version:
@@ -56,7 +57,8 @@ If you prefer, you can use its outputs too, which can also work [across jobs](ht
     - name: Create tag if necessary
       uses: fregante/daily-version-action@v3
       with:
-        prefix: v # This will cause the tags to start with v, like "v20.12.31`
+        prefix: v
+        custom-version: '1.2.3'
 ```
 
 ## Outputs
@@ -69,8 +71,6 @@ Outputs can be [used across jobs](https://help.github.com/en/actions/reference/w
 ## Examples
 
 ### Nightly release
-
-Here's a complete workflow to create a nightly release, when necessary: ([original here](https://github.com/fregante/ghatemplates#webextreleaseyml))
 
 ```yml
 on:
@@ -85,7 +85,7 @@ jobs:
     - uses: fregante/daily-version-action@v3
       name: Create tag if necessary
       id: daily-version
-    outputs: # Shares the action’s outputs to the Next jobs
+    outputs:
       created: ${{ steps.daily-version.outputs.created }}
       version: ${{ steps.daily-version.outputs.version }}
 
