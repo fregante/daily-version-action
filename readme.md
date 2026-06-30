@@ -78,6 +78,12 @@ Here's a complete workflow to create a nightly release, when necessary: ([origin
 on:
   schedule:
     - cron: '59 23 * * *'
+  workflow_call:
+    inputs:
+      custom-version:
+        type: string
+        description: Override the version number
+        required: false
 
 jobs:
   Tag:
@@ -87,7 +93,9 @@ jobs:
     - uses: fregante/daily-version-action@v3
       name: Create tag if necessary
       id: daily-version
-    outputs: # Shares the action’s outputs to the Next jobs
+      with:
+        custom-version: ${{ inputs.custom-version }}
+    outputs:
       created: ${{ steps.daily-version.outputs.created }}
       version: ${{ steps.daily-version.outputs.version }}
 
