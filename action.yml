@@ -7,6 +7,9 @@ branding:
 inputs:
   prefix:
     description: String to prepend to the tag name
+  custom-version:
+    description: Override the version number (skips daily-version generation, but tag creation logic still applies)
+
 outputs:
   created:
     description: If it exists, a new tag has been created

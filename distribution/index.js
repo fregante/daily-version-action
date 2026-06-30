@@ -31196,7 +31196,9 @@ async function init() {
 	}
 
 	// A new tag must be created
-	const version = daily_version_default()(getInput('prefix'));
+	const customVersion = getInput('custom-version');
+	const version = customVersion || daily_version_default()(getInput('prefix'));
+
 	info(`HEAD isn’t tagged. \`daily-version-action\` will create \`${version}\``);
 
 	setOutput('version', version);
