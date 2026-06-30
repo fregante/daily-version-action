@@ -10,7 +10,7 @@ See usage real-world [example on Refined GitHub's repo](https://github.com/refin
 
 ## Usage
 
-It expects `git` to be configured to push to the same repo. 
+It expects `git` to be configured to push to the same repo.
 - `actions/checkout` automatically sets required token to push the tag to the repo.
 - If not already set, the tag author will be `daily-version-action <actions@users.noreply.github.com>`. This can be customized with something like [setup-git-token](https://github.com/fregante/setup-git-token).
 
@@ -72,6 +72,8 @@ Outputs can be [used across jobs](https://help.github.com/en/actions/reference/w
 
 ### Nightly release
 
+Here's a complete workflow to create a nightly release, when necessary: ([original here](https://github.com/fregante/ghatemplates#webextreleaseyml))
+
 ```yml
 on:
   schedule:
@@ -85,7 +87,7 @@ jobs:
     - uses: fregante/daily-version-action@v3
       name: Create tag if necessary
       id: daily-version
-    outputs:
+    outputs: # Shares the action’s outputs to the Next jobs
       created: ${{ steps.daily-version.outputs.created }}
       version: ${{ steps.daily-version.outputs.version }}
 
